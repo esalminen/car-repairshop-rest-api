@@ -1,24 +1,24 @@
-package com.car_repairshop.rest_api;
+package com.car_repairshop.rest_api.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+/**
+ * This class represents a person. It is an abstract class and cannot be
+ * instantiated.
+ * 
+ * @author Esa Salminen
+ * @version 1.0
+ * @since 23.2.2023
+ * 
+ * 
+ *        Person class is a superclass for all people in the system. It contains
+ *        all the basic information of a person.
+ */
 
-@Entity
-public class Customer {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public abstract class Person {
   private String firstName;
   private String lastName;
   private String email;
   private String phone;
   private String address;
-
-  public Customer() {
-  }
 
   public String getFirstName() {
     return this.firstName;
@@ -60,11 +60,14 @@ public class Customer {
     this.address = address;
   }
 
-  public Long getId() {
-    return this.id;
+  public Person() {
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public Person(String firstName, String lastName, String email, String phone, String address) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phone = phone;
+    this.address = address;
   }
 }
