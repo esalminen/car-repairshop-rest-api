@@ -1,4 +1,4 @@
-package com.car_repairshop.rest_api.models;
+package com.car_repairshop.rest_api.model;
 
 /**
  * This class represents a customers car.
@@ -7,12 +7,13 @@ package com.car_repairshop.rest_api.models;
  * @version 1.0
  * @since 23.2.2023
  * 
- *        Car class contains all the information of a car, such as license
+ *        Car class contains all the information of a car, such as id, license
  *        plate, brand, model, color, year and mileage.
  */
 
 public class Car {
 
+  private Long id;
   private String licensePlate;
   private String brand;
   private String model;
@@ -20,12 +21,12 @@ public class Car {
   private String year;
   private int mileage;
 
-  public int getMileage() {
-    return this.mileage;
+  public Long getId() {
+    return this.id;
   }
 
-  public void setMileage(int mileage) {
-    this.mileage = mileage;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getLicensePlate() {
@@ -66,6 +67,14 @@ public class Car {
 
   public void setYear(String year) {
     this.year = year;
+  }
+
+  public int getMileage() {
+    return this.mileage;
+  }
+
+  public void setMileage(int mileage) {
+    this.mileage = mileage;
   }
 
   public Car() {

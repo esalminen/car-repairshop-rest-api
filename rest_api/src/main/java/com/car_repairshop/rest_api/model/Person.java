@@ -1,4 +1,7 @@
-package com.car_repairshop.rest_api.models;
+package com.car_repairshop.rest_api.model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a person. It is an abstract class and cannot be
@@ -14,11 +17,20 @@ package com.car_repairshop.rest_api.models;
  */
 
 public abstract class Person {
+  private Long id;
   private String firstName;
   private String lastName;
   private String email;
   private String phone;
   private String address;
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getFirstName() {
     return this.firstName;

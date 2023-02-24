@@ -1,4 +1,4 @@
-package com.car_repairshop.rest_api.models;
+package com.car_repairshop.rest_api.model;
 
 /**
  * This class represents a repairshop worker.
