@@ -13,21 +13,25 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"/**\r",
+							" * Create customers amount that is written on collection variable \"customerCount\".\r",
+							" * Test 1: Test that each request returns status code 200.\r",
+							" */\r",
+							"\r",
+							"//Test 1\r",
 							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status(200)\r",
 							"});\r",
 							"\r",
-							"const customerCount = parseInt(pm.collectionVariables.get(\"customerCount\"));\r",
-							"let currentCount = parseInt(pm.collectionVariables.get(\"currentCount\"))\r",
+							"// Track customer amount with id value\r",
+							"const customerCount = parseInt(pm.collectionVariables.get(\"customerCount\"))\r",
+							"const currentCustomerId = pm.response.json().id\r",
 							"\r",
-							"if (currentCount < customerCount){\r",
-							"    currentCount = currentCount + 1;\r",
-							"    postman.setNextRequest(\"Post a customer\");\r",
+							"if (currentCustomerId < customerCount){\r",
+							"    postman.setNextRequest(\"Post a customer\")\r",
 							"} else {\r",
-							"    postman.setNextRequest(\"Get all customers\");\r",
-							"}\r",
-							"\r",
-							"pm.collectionVariables.set(\"currentCount\", currentCount);"
+							"    postman.setNextRequest(\"Get all customers\")\r",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -77,13 +81,23 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.collectionVariables.set(\"currentCount\", 0);\r",
+							"/**\r",
+							" * Get all customers from REST API.\r",
+							" * Test 1: Test that response status code is 200.\r",
+							" * Test 2: Test that response gives right amount of customers.\r",
+							" */\r",
 							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
+							"// Test 1\r",
+							"pm.test(\"Status code is 200\", () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"// set random customer id to collection variable\r",
+							"// Test 2\r",
+							"pm.test(\"Righ amount of customers are returned\", ()=>{\r",
+							"    pm.expect(pm.response.json().length).to.eql(parseInt(pm.collectionVariables.get(\"customerCount\")))\r",
+							"})\r",
+							"\r",
+							"// Set random customer id to collection variable\r",
 							"pm.collectionVariables.set(\"randomId\", Math.floor(Math.random() * parseInt(pm.collectionVariables.get(\"customerCount\"))));"
 						],
 						"type": "text/javascript"
@@ -116,9 +130,19 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"/**\r",
+							" * Get customer with random value generated in previous test and save it to collection variable.\r",
+							" * Test 1: Test that response status code is 200.\r",
+							" */\r",
+							"\r",
+							"// Test 1\r",
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"\r",
+							"// Save random customer to collection variable \"randomCustomer\"\r",
+							"const randomCustomer = JSON.stringify(pm.response.json())\r",
+							"pm.collectionVariables.set(\"randomCustomer\", randomCustomer)"
 						],
 						"type": "text/javascript"
 					}
@@ -151,6 +175,21 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"/**\r",
+							" * Update customer with new information.\r",
+							" * Test 1: Test that response status code is 200.\r",
+							" * Test 2: Test that information is changed compared to \"randomCustomer\" collection variable\r",
+							" */\r",
+							"\r",
+							"// Test 1\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2\r",
+							"pm.test(\"Customer data updated\", () => {\r",
+							"    pm.expect(JSON.stringify(pm.response.json())).to.not.eql(pm.collectionVariables.get(\"randomCustomer\"))\r",
+							"})\r",
 							""
 						],
 						"type": "text/javascript"
@@ -193,6 +232,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"/**\r",
+							" * Delete customer with random id.\r",
+							" * Test 1: Test that response status code is 200.\r",
+							" */\r",
+							"\r",
+							"// Test 1\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -248,16 +296,15 @@
 		},
 		{
 			"key": "customerCount",
-			"value": "98",
-			"type": "string"
-		},
-		{
-			"key": "currentCount",
-			"value": "0",
+			"value": "100",
 			"type": "string"
 		},
 		{
 			"key": "randomId",
+			"value": ""
+		},
+		{
+			"key": "randomCustomer",
 			"value": ""
 		}
 	]
