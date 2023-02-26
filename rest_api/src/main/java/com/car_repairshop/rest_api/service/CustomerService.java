@@ -22,7 +22,7 @@ public class CustomerService {
   private List<Customer> customers = new ArrayList<>();
 
   /**
-   * Adds a new customer to the list. Returns the added customer with the new id.
+   * Add a new customer to the list. Returns the added customer with the new id.
    */
   public Customer addCustomer(Customer customer) {
     Long highestId = 0L;
@@ -37,6 +37,19 @@ public class CustomerService {
   }
 
   /**
+   * Add a new car to the customer. Returns the added car.
+   */
+  public Car addCarToCustomer(Car car, Long customerId) {
+    Customer customer = getCustomerById(customerId);
+    if (customer != null) {
+      customer.addCar(car);
+      return car;
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Returns a list of all customers.
    */
   public List<Customer> getCustomers() {
@@ -46,10 +59,97 @@ public class CustomerService {
   /**
    * Returns a customer by id.
    */
-  public Customer getCustomerById(int customerNumber) {
+  public Customer getCustomerById(Long customerId) {
     for (Customer customer : customers) {
-      if (customer.getId() == customerNumber) {
+      if (customer.getId() == customerId) {
         return customer;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns a list of cars of a customer.
+   */
+  public List<Car> getCarsOfCustomer(Long customerId) {
+    Customer customer = getCustomerById(customerId);
+    if (customer != null) {
+      return customer.getCars();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Updates customer data. Returns the updated customer.
+   */
+  public Customer updateCustomer(Long customerId, Customer updatedCustomer) {
+    Customer customer = getCustomerById(customerId);
+    if (customer != null) {
+      customer.setFirstName(updatedCustomer.getFirstName());
+      customer.setLastName(updatedCustomer.getLastName());
+      customer.setEmail(updatedCustomer.getEmail());
+      customer.setPhone(updatedCustomer.getPhone());
+      customer.setAddress(updatedCustomer.getAddress());
+      return customer;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Updates car data. Returns the updated car.
+   */
+  public Car updateCar(Long customerId, Car updatedCar) {
+    Customer customer = getCustomerById(customerId);
+    Car car = null;
+    if (customer != null) {
+      for (Car c : customer.getCars()) {
+        if (c.getLicensePlate() == updatedCar.getLicensePlate()) {
+          c.setBrand(updatedCar.getBrand());
+          c.setModel(updatedCar.getModel());
+          c.setYear(updatedCar.getYear());
+          c.setLicensePlate(updatedCar.getLicensePlate());
+          c.setMileage(updatedCar.getMileage());
+          c.setColor(updatedCar.getColor());
+          car = c;
+        }
+      }
+      if (car != null) {
+        return car;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Deletes a customer by id. Returns true if the customer was deleted.
+   */
+  public Customer deleteCustomer(Long customerId) {
+    Customer customer = getCustomerById(customerId);
+    if (customer != null) {
+      customers.remove(customer);
+      return customer;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Deletes a car by license plate. Returns deleted car.
+   */
+  public Car deleteCar(Long customerId, String licensePlate) {
+    Customer customer = getCustomerById(customerId);
+    Car car = null;
+    if (customer != null) {
+      for (Car c : customer.getCars()) {
+        if (c.getLicensePlate() == licensePlate) {
+          car = c;
+        }
+      }
+      if (car != null) {
+        customer.getCars().remove(car);
+        return car;
       }
     }
     return null;

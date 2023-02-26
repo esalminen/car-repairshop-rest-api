@@ -1,6 +1,5 @@
 package com.car_repairshop.rest_api.controller;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.car_repairshop.rest_api.model.Car;
 import com.car_repairshop.rest_api.model.Customer;
 import com.car_repairshop.rest_api.service.CustomerService;
 
@@ -53,6 +53,16 @@ public class CustomerController {
     }
   }
 
+  @PostMapping("/customers/{customerId}/cars")
+  public ResponseEntity<Car> addCarToCustomer(@RequestBody Car car, @PathVariable Long customerId) {
+    Car result = cs.addCarToCustomer(car, customerId);
+    if (result != null) {
+      return new ResponseEntity<Car>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
   /**
    * Returns a list of all customers.
    * 
@@ -73,12 +83,28 @@ public class CustomerController {
    * @return ResponseEntity<Customer>
    */
   @GetMapping("/customers/{id}")
-  public ResponseEntity<Customer> getCustomerByCustomerNumber(@PathVariable int id) {
+  public ResponseEntity<Customer> getCustomerByCustomerNumber(@PathVariable Long id) {
     Customer result = cs.getCustomerById(id);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
       return new ResponseEntity<Customer>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
+   * Get all cars of a customer by customer id.
+   * 
+   * @param id
+   * @return ResponseEntity<Customer>
+   */
+  @GetMapping("/customers/{id}/cars")
+  public ResponseEntity<List<Car>> getCarsByCustomerId(@PathVariable Long id) {
+    List<Car> result = cs.getCarsOfCustomer(id);
+    if (result != null) {
+      return new ResponseEntity<List<Car>>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<List<Car>>(result, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -90,17 +116,31 @@ public class CustomerController {
    * @return ResponseEntity<Customer>
    */
   @PutMapping("/customers/{id}")
-  public ResponseEntity<Customer> updateCustomer(@PathVariable int id, @RequestBody Customer customer) {
-    Customer result = cs.getCustomerById(id);
+  public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    Customer result = cs.updateCustomer(id, customer);
     if (result != null) {
-      result.setFirstName(customer.getFirstName());
-      result.setLastName(customer.getLastName());
-      result.setPhone(customer.getPhone());
-      result.setAddress(customer.getAddress());
-      result.setEmail(customer.getEmail());
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
       return new ResponseEntity<Customer>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
+   * Updates a car by id and returns the updated car.
+   * 
+   * @param id
+   * @param licensePlate
+   * @param car
+   * @return ResponseEntity<Car>
+   */
+  @PutMapping("/customers/{id}/cars/{licensePlate}")
+  public ResponseEntity<Car> updateCar(@PathVariable Long id, @PathVariable String licensePlate,
+      @RequestBody Car car) {
+    Car result = cs.updateCar(id, car);
+    if (result != null) {
+      return new ResponseEntity<Car>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -111,13 +151,22 @@ public class CustomerController {
    * @return ResponseEntity<Customer>
    */
   @DeleteMapping("/customers/{id}")
-  public ResponseEntity<Customer> deleteCustomer(@PathVariable int id) {
-    Customer result = cs.getCustomerById(id);
+  public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+    Customer result = cs.deleteCustomer(id);
     if (result != null) {
-      cs.getCustomers().remove(result);
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
       return new ResponseEntity<Customer>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @DeleteMapping("/customers/{id}/cars/{licensePlate}")
+  public ResponseEntity<Car> deleteCar(@PathVariable Long customerId, @PathVariable String licensePlate) {
+    Car result = cs.deleteCar(customerId, licensePlate);
+    if (result != null) {
+      return new ResponseEntity<Car>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
     }
   }
 

@@ -7,27 +7,18 @@ package com.car_repairshop.rest_api.model;
  * @version 1.0
  * @since 23.2.2023
  * 
- *        Car class contains all the information of a car, such as id, license
+ *        Car class contains all the information of a car license
  *        plate, brand, model, color, year and mileage.
  */
 
 public class Car {
 
-  private Long id;
   private String licensePlate;
   private String brand;
   private String model;
   private String color;
   private String year;
   private int mileage;
-
-  public Long getId() {
-    return this.id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public String getLicensePlate() {
     return this.licensePlate;
