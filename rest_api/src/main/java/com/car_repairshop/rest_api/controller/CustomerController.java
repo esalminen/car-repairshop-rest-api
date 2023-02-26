@@ -79,12 +79,12 @@ public class CustomerController {
   /**
    * Returns a customer by id.
    * 
-   * @param id
+   * @param customerId
    * @return ResponseEntity<Customer>
    */
-  @GetMapping("/customers/{id}")
-  public ResponseEntity<Customer> getCustomerByCustomerNumber(@PathVariable Long id) {
-    Customer result = cs.getCustomerById(id);
+  @GetMapping("/customers/{customerId}")
+  public ResponseEntity<Customer> getCustomerByCustomerNumber(@PathVariable Long customerId) {
+    Customer result = cs.getCustomerById(customerId);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
@@ -95,12 +95,12 @@ public class CustomerController {
   /**
    * Get all cars of a customer by customer id.
    * 
-   * @param id
+   * @param customerId
    * @return ResponseEntity<Customer>
    */
-  @GetMapping("/customers/{id}/cars")
-  public ResponseEntity<List<Car>> getCarsByCustomerId(@PathVariable Long id) {
-    List<Car> result = cs.getCarsOfCustomer(id);
+  @GetMapping("/customers/{customerId}/cars")
+  public ResponseEntity<List<Car>> getCarsByCustomerId(@PathVariable Long customerId) {
+    List<Car> result = cs.getCarsOfCustomer(customerId);
     if (result != null) {
       return new ResponseEntity<List<Car>>(result, HttpStatus.OK);
     } else {
@@ -109,15 +109,32 @@ public class CustomerController {
   }
 
   /**
+   * Get a car of a customer by customer id and license plate.
+   * 
+   * @param customerId
+   * @param licensePlate
+   * @return ResponseEntity<Car>
+   */
+  @GetMapping("/customers/{customerId}/cars/{licensePlate}")
+  public ResponseEntity<Car> getCarByLicensePlate(@PathVariable Long customerId, @PathVariable String licensePlate) {
+    Car result = cs.getCarOfCustomerByLicensePlate(customerId, licensePlate);
+    if (result != null) {
+      return new ResponseEntity<Car>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
    * Updates a customer by id and returns the updated customer.
    * 
-   * @param id
+   * @param customerId
    * @param customer
    * @return ResponseEntity<Customer>
    */
-  @PutMapping("/customers/{id}")
-  public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-    Customer result = cs.updateCustomer(id, customer);
+  @PutMapping("/customers/{customerId}")
+  public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @RequestBody Customer customer) {
+    Customer result = cs.updateCustomer(customerId, customer);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
@@ -128,15 +145,15 @@ public class CustomerController {
   /**
    * Updates a car by id and returns the updated car.
    * 
-   * @param id
+   * @param customerId
    * @param licensePlate
    * @param car
    * @return ResponseEntity<Car>
    */
-  @PutMapping("/customers/{id}/cars/{licensePlate}")
-  public ResponseEntity<Car> updateCar(@PathVariable Long id, @PathVariable String licensePlate,
+  @PutMapping("/customers/{customerId}/cars/{licensePlate}")
+  public ResponseEntity<Car> updateCar(@PathVariable Long customerId, @PathVariable String licensePlate,
       @RequestBody Car car) {
-    Car result = cs.updateCar(id, car);
+    Car result = cs.updateCar(customerId, car);
     if (result != null) {
       return new ResponseEntity<Car>(result, HttpStatus.OK);
     } else {
@@ -147,12 +164,12 @@ public class CustomerController {
   /**
    * Deletes a customer by id and returns the deleted customer.
    * 
-   * @param id
+   * @param customerId
    * @return ResponseEntity<Customer>
    */
-  @DeleteMapping("/customers/{id}")
-  public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
-    Customer result = cs.deleteCustomer(id);
+  @DeleteMapping("/customers/{customerId}")
+  public ResponseEntity<Customer> deleteCustomer(@PathVariable Long customerId) {
+    Customer result = cs.deleteCustomer(customerId);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
@@ -160,7 +177,14 @@ public class CustomerController {
     }
   }
 
-  @DeleteMapping("/customers/{id}/cars/{licensePlate}")
+  /**
+   * Deletes a car by id and returns the deleted car.
+   * 
+   * @param customerId
+   * @param licensePlate
+   * @return ResponseEntity<Car>
+   */
+  @DeleteMapping("/customers/{customerId}/cars/{licensePlate}")
   public ResponseEntity<Car> deleteCar(@PathVariable Long customerId, @PathVariable String licensePlate) {
     Car result = cs.deleteCar(customerId, licensePlate);
     if (result != null) {

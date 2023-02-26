@@ -81,6 +81,21 @@ public class CustomerService {
   }
 
   /**
+   * Returns a car of a customer.
+   */
+  public Car getCarOfCustomerByLicensePlate(Long customerId, String licensePlate) {
+    Customer customer = getCustomerById(customerId);
+    if (customer != null) {
+      for (Car car : customer.getCars()) {
+        if (car.getLicensePlate().equals(licensePlate)) {
+          return car;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
    * Updates customer data. Returns the updated customer.
    */
   public Customer updateCustomer(Long customerId, Customer updatedCustomer) {
@@ -105,7 +120,7 @@ public class CustomerService {
     Car car = null;
     if (customer != null) {
       for (Car c : customer.getCars()) {
-        if (c.getLicensePlate() == updatedCar.getLicensePlate()) {
+        if (c.getLicensePlate().equals(updatedCar.getLicensePlate())) {
           c.setBrand(updatedCar.getBrand());
           c.setModel(updatedCar.getModel());
           c.setYear(updatedCar.getYear());
@@ -143,7 +158,7 @@ public class CustomerService {
     Car car = null;
     if (customer != null) {
       for (Car c : customer.getCars()) {
-        if (c.getLicensePlate() == licensePlate) {
+        if (c.getLicensePlate().equals(licensePlate)) {
           car = c;
         }
       }
