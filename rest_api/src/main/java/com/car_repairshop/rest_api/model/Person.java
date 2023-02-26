@@ -1,8 +1,5 @@
 package com.car_repairshop.rest_api.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class represents a person. It is an abstract class and cannot be
  * instantiated.
