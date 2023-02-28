@@ -60,14 +60,9 @@ public class WorkerService {
    */
   public Worker updateWorker(Long workerId, Worker updatedWorker) {
     Worker worker = getWorkerById(workerId);
+    updatedWorker.setId(workerId);
     if (worker != null) {
-      worker.setFirstName(updatedWorker.getFirstName());
-      worker.setLastName(updatedWorker.getLastName());
-      worker.setEmail(updatedWorker.getEmail());
-      worker.setPhone(updatedWorker.getPhone());
-      worker.setAddress(updatedWorker.getAddress());
-      worker.setHourlyWage(updatedWorker.getHourlyWage());
-      worker.setChargePerHour(updatedWorker.getChargePerHour());
+      worker = updatedWorker;
       return worker;
     } else {
       return null;

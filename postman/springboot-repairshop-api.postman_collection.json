@@ -7,528 +7,827 @@
 	},
 	"item": [
 		{
-			"name": "Post a customer",
-			"event": [
+			"name": "Customer",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Create customer.\r",
-							" * Test 1: Test that each request returns status code 200.\r",
-							" */\r",
-							"\r",
-							"//Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200)\r",
-							"});\r",
-							"\r",
-							"// Track customer id value for generating 1-3 cars\r",
-							"const currentCustomerId = pm.response.json().id\r",
-							"pm.collectionVariables.set(\"currentCustomerId\", currentCustomerId)\r",
-							"pm.collectionVariables.set(\"customerCarAmount\", (Math.floor(Math.random() * 2 + 0.99)))\r",
-							"pm.collectionVariables.set(\"customerCarCounter\", 0)"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Post a customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create customer.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"// Track customer id value for generating 1-3 cars\r",
+									"const currentCustomerId = pm.response.json().id\r",
+									"pm.collectionVariables.set(\"currentCustomerId\", currentCustomerId)\r",
+									"pm.collectionVariables.set(\"customerCarAmount\", (Math.floor(Math.random() * 2 + 0.99)))\r",
+									"pm.collectionVariables.set(\"customerCarCounter\", 0)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/customers",
-					"host": [
-						"{{baseUrl}}"
 					],
-					"path": [
-						"customers"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Post a car for customer",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Test data for cars. Select a random car from list at each run.\r",
-							"const car = utils.getRandomCar()\r",
-							"pm.variables.set('carBrand', car.brand);\r",
-							"pm.variables.set('carModel', car.model);\r",
-							"pm.variables.set('carYear', car.year);\r",
-							"pm.variables.set('carMileage', car.mileage);\r",
-							"pm.variables.set('carColor', car.color);\r",
-							"pm.variables.set('carLicensePlate', car.licensePlate);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Create 1-2 cars to customer\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" */\r",
-							"\r",
-							"const currentCustomerId = parseInt(pm.collectionVariables.get('currentCustomerId'))\r",
-							"const customerCount = parseInt(pm.collectionVariables.get(\"customerCount\"))\r",
-							"const customerCarCounter = parseInt(pm.collectionVariables.get(\"customerCarCounter\"))+1\r",
-							"const customerCarAmount = parseInt(pm.collectionVariables.get(\"customerCarAmount\"))\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200)\r",
-							"});\r",
-							"\r",
-							"// If customer doesn't have enough cars, run this request again\r",
-							"if (customerCarCounter < customerCarAmount){\r",
-							"    pm.collectionVariables.set(\"customerCarCounter\", customerCarCounter)\r",
-							"    postman.setNextRequest(\"Post a car for customer\")\r",
-							"} \r",
-							"// If more customers are needed, start from beginning\r",
-							"else if (currentCustomerId < customerCount){\r",
-							"    postman.setNextRequest(\"Post a customer\")\r",
-							"} \r",
-							"// If number of customers is reached, continue testing onward\r",
-							"else {\r",
-							"    postman.setNextRequest(\"Get all customers\")\r",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"licensePlate\":\"{{carLicensePlate}}\",\r\n    \"brand\":\"{{carBrand}}\",\r\n    \"model\":\"{{carModel}}\",\r\n    \"color\":\"{{carColor}}\",\r\n    \"year\":\"{{carYear}}\",\r\n    \"mileage\":\"{{carMileage}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{currentCustomerId}}/cars",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"customers",
-						"{{currentCustomerId}}",
-						"cars"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get all customers",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Get all customers from REST API.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" * Test 2: Test that response gives right amount of customers.\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"// Test 2\r",
-							"pm.test(\"Righ amount of customers are returned\", ()=>{\r",
-							"    pm.expect(pm.response.json().length).to.eql(parseInt(pm.collectionVariables.get(\"customerCount\")))\r",
-							"})\r",
-							"\r",
-							"// Set random customer id to collection variable\r",
-							"pm.collectionVariables.set(\"randomId\", Math.floor(Math.random() * pm.response.json().length)+1);"
-						],
-						"type": "text/javascript"
-					}
+					},
+					"response": []
 				},
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/customers",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"customers"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get a customer with id",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Get customer with random value generated in previous test and save it to collection variable.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"// Save random customer to collection variable \"randomCustomer\"\r",
-							"const randomCustomer = JSON.stringify(pm.response.json())\r",
-							"pm.collectionVariables.set(\"randomCustomer\", randomCustomer)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"customers",
-						"{{randomId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update a customer",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Update customer with new information.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" * Test 2: Test that information is changed compared to \"randomCustomer\" collection variable\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"// Test 2\r",
-							"pm.test(\"Customer data updated\", () => {\r",
-							"    pm.expect(JSON.stringify(pm.response.json())).to.not.eql(pm.collectionVariables.get(\"randomCustomer\"))\r",
-							"})\r",
-							"\r",
-							"// Save persons first cars licenseplate\r",
-							"pm.collectionVariables.set(\"updateCarLicensePlate\", pm.response.json().cars[0].licensePlate)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Post a car for customer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Test data for cars. Select a random car from list at each run.\r",
+									"const car = utils.getRandomCar()\r",
+									"pm.variables.set('carBrand', car.brand);\r",
+									"pm.variables.set('carModel', car.model);\r",
+									"pm.variables.set('carYear', car.year);\r",
+									"pm.variables.set('carMileage', car.mileage);\r",
+									"pm.variables.set('carColor', car.color);\r",
+									"pm.variables.set('carLicensePlate', car.licensePlate);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create 1-2 cars to customer\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" */\r",
+									"\r",
+									"const currentCustomerId = parseInt(pm.collectionVariables.get('currentCustomerId'))\r",
+									"const customerCount = parseInt(pm.collectionVariables.get(\"customerCount\"))\r",
+									"const customerCarCounter = parseInt(pm.collectionVariables.get(\"customerCarCounter\"))+1\r",
+									"const customerCarAmount = parseInt(pm.collectionVariables.get(\"customerCarAmount\"))\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"// If customer doesn't have enough cars, run this request again\r",
+									"if (customerCarCounter < customerCarAmount){\r",
+									"    pm.collectionVariables.set(\"customerCarCounter\", customerCarCounter)\r",
+									"    postman.setNextRequest(\"Post a car for customer\")\r",
+									"} \r",
+									"// If more customers are needed, start from beginning\r",
+									"else if (currentCustomerId < customerCount){\r",
+									"    postman.setNextRequest(\"Post a customer\")\r",
+									"} \r",
+									"// If number of customers is reached, continue testing onward\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get all customers\")\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}",
-					"host": [
-						"{{baseUrl}}"
 					],
-					"path": [
-						"customers",
-						"{{randomId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get customers car with customer id and licenseplate",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Get customer with random value generated in previous test and save it to collection variable.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"// Save random customer to collection variable \"randomCustomer\"\r",
-							"const randomCustomer = JSON.stringify(pm.response.json())\r",
-							"pm.collectionVariables.set(\"randomCustomer\", randomCustomer)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"customers",
-						"{{randomId}}",
-						"cars",
-						"{{updateCarLicensePlate}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update  customers car",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Update customers car with another one.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" * Test 2: Test that information is changed compared to \"randomCustomer\" collection variable\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"// Test 2\r",
-							"pm.test(\"Customer data updated\", () => {\r",
-							"    pm.expect(JSON.stringify(pm.response.json())).to.not.eql(pm.collectionVariables.get(\"randomCustomer\"))\r",
-							"})\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const car = utils.getRandomCar()\r",
-							"pm.variables.set('carBrand', car.brand);\r",
-							"pm.variables.set('carModel', car.model);\r",
-							"pm.variables.set('carYear', car.year);\r",
-							"pm.variables.set('carMileage', car.mileage);\r",
-							"pm.variables.set('carColor', car.color);\r",
-							"pm.variables.set('carLicensePlate', pm.collectionVariables.get(\"updateCarLicensePlate\"))"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"licensePlate\":\"{{carLicensePlate}}\",\r\n    \"brand\":\"{{carBrand}}\",\r\n    \"model\":\"{{carModel}}\",\r\n    \"color\":\"{{carColor}}\",\r\n    \"year\":\"{{carYear}}\",\r\n    \"mileage\":\"{{carMileage}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"licensePlate\":\"{{carLicensePlate}}\",\r\n    \"brand\":\"{{carBrand}}\",\r\n    \"model\":\"{{carModel}}\",\r\n    \"color\":\"{{carColor}}\",\r\n    \"year\":\"{{carYear}}\",\r\n    \"mileage\":\"{{carMileage}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{currentCustomerId}}/cars",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{currentCustomerId}}",
+								"cars"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"customers",
-						"{{randomId}}",
-						"cars",
-						"{{updateCarLicensePlate}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete customers car",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
+					},
+					"response": []
 				},
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const car = utils.getRandomCar()\r",
-							"pm.variables.set('carBrand', car.brand);\r",
-							"pm.variables.set('carModel', car.model);\r",
-							"pm.variables.set('carYear', car.year);\r",
-							"pm.variables.set('carMileage', car.mileage);\r",
-							"pm.variables.set('carColor', car.color);\r",
-							"pm.variables.set('carLicensePlate', pm.collectionVariables.get(\"updateCarLicensePlate\"))"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
-					"host": [
-						"{{baseUrl}}"
+					"name": "Get all customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all customers from REST API.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" * Test 2: Test that response gives right amount of customers.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2\r",
+									"pm.test(\"Righ amount of customers are returned\", ()=>{\r",
+									"    pm.expect(pm.response.json().length).to.eql(parseInt(pm.collectionVariables.get(\"customerCount\")))\r",
+									"})\r",
+									"\r",
+									"// Set random customer id to collection variable\r",
+									"pm.collectionVariables.set(\"randomId\", Math.floor(Math.random() * pm.response.json().length)+1);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"customers",
-						"{{randomId}}",
-						"cars",
-						"{{updateCarLicensePlate}}"
-					]
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a customer with id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get customer with random value generated in previous test and save it to collection variable.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Save random customer to collection variable \"randomCustomer\"\r",
+									"const randomCustomer = JSON.stringify(pm.response.json())\r",
+									"pm.collectionVariables.set(\"randomCustomer\", randomCustomer)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Update customer with new information.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" * Test 2: Test that information is changed compared to \"randomCustomer\" collection variable\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2\r",
+									"pm.test(\"Customer data updated\", () => {\r",
+									"    pm.expect(JSON.stringify(pm.response.json())).to.not.eql(pm.collectionVariables.get(\"randomCustomer\"))\r",
+									"})\r",
+									"\r",
+									"// Save persons first cars licenseplate\r",
+									"pm.collectionVariables.set(\"updateCarLicensePlate\", pm.response.json().cars[0].licensePlate)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customers car with customer id and licenseplate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get customer with random value generated in previous test and save it to collection variable.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Save random customer to collection variable \"randomCustomer\"\r",
+									"const randomCustomer = JSON.stringify(pm.response.json())\r",
+									"pm.collectionVariables.set(\"randomCustomer\", randomCustomer)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}",
+								"cars",
+								"{{updateCarLicensePlate}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update  customers car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Update customers car with another one.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" * Test 2: Test that information is changed compared to \"randomCustomer\" collection variable\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2\r",
+									"pm.test(\"Customer data updated\", () => {\r",
+									"    pm.expect(JSON.stringify(pm.response.json())).to.not.eql(pm.collectionVariables.get(\"randomCustomer\"))\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const car = utils.getRandomCar()\r",
+									"pm.variables.set('carBrand', car.brand);\r",
+									"pm.variables.set('carModel', car.model);\r",
+									"pm.variables.set('carYear', car.year);\r",
+									"pm.variables.set('carMileage', car.mileage);\r",
+									"pm.variables.set('carColor', car.color);\r",
+									"pm.variables.set('carLicensePlate', pm.collectionVariables.get(\"updateCarLicensePlate\"))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"licensePlate\":\"{{carLicensePlate}}\",\r\n    \"brand\":\"{{carBrand}}\",\r\n    \"model\":\"{{carModel}}\",\r\n    \"color\":\"{{carColor}}\",\r\n    \"year\":\"{{carYear}}\",\r\n    \"mileage\":\"{{carMileage}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}",
+								"cars",
+								"{{updateCarLicensePlate}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete customers car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const car = utils.getRandomCar()\r",
+									"pm.variables.set('carBrand', car.brand);\r",
+									"pm.variables.set('carModel', car.model);\r",
+									"pm.variables.set('carYear', car.year);\r",
+									"pm.variables.set('carMileage', car.mileage);\r",
+									"pm.variables.set('carColor', car.color);\r",
+									"pm.variables.set('carLicensePlate', pm.collectionVariables.get(\"updateCarLicensePlate\"))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}/cars/{{updateCarLicensePlate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}",
+								"cars",
+								"{{updateCarLicensePlate}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Delete customer with random id.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers/{{randomId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers",
+								"{{randomId}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete a customer",
-			"event": [
+			"name": "Worker",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"/**\r",
-							" * Delete customer with random id.\r",
-							" * Test 1: Test that response status code is 200.\r",
-							" */\r",
-							"\r",
-							"// Test 1\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"followRedirects": false
-			},
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/customers/{{randomId}}",
-					"host": [
-						"{{baseUrl}}"
+					"name": "Post a worker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Randomize salary and hourly wage\r",
+									"const wageArray = [12, 15, 17, 19, 21, 22, 25, 30];\r",
+									"const hourlyWage = wageArray[Math.floor(Math.random() * wageArray.length)]\r",
+									"const hourlyCharge = hourlyWage * 3;\r",
+									"\r",
+									"pm.collectionVariables.set(\"hourlyWage\", hourlyWage)\r",
+									"pm.collectionVariables.set(\"hourlyCharge\", hourlyCharge)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create a worker.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"// If more workers are needed post a new one\r",
+									"const workerCount = pm.collectionVariables.get(\"workerCount\")\r",
+									"const workerMaxId = pm.response.json().id\r",
+									"pm.collectionVariables.set(\"workerMaxId\", workerMaxId)\r",
+									"\r",
+									"if(workerMaxId < workerCount){\r",
+									"    postman.setNextRequest(\"Post a worker\")\r",
+									"} else {\r",
+									"    postman.setNextRequest(\"Get all workers\")\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"customers",
-						"{{randomId}}"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\",\r\n    \"hourlyWage\":{{hourlyWage}},\r\n    \"chargePerHour\":{{hourlyCharge}}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/workers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all workers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all workers\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a worker with id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Set random number for worker\r",
+									"const workerMaxId = pm.collectionVariables.get(\"workerMaxId\")\r",
+									"pm.collectionVariables.set(\"randomWorkerId\", Math.floor(Math.random() * (workerMaxId - 1))+1)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all workers\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"// Save worker to collection variable\r",
+									"pm.collectionVariables.set(\"randomWorker\", JSON.stringify(pm.response.json()))\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workers/{{randomWorkerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workers",
+								"{{randomWorkerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a worker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Randomize salary and hourly wage\r",
+									"const wageArray = [12, 15, 17, 19, 21, 22, 25, 30];\r",
+									"const hourlyWage = wageArray[Math.floor(Math.random() * wageArray.length)]\r",
+									"const hourlyCharge = hourlyWage * 3;\r",
+									"\r",
+									"pm.collectionVariables.set(\"hourlyWage\", hourlyWage)\r",
+									"pm.collectionVariables.set(\"hourlyCharge\", hourlyCharge)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Update a worker.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" * Test 2: Check that old and new worker data is not equal\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"// Save updated worker to collection variable\r",
+									"pm.collectionVariables.set(\"updatedWorker\", JSON.stringify(pm.response.json()))\r",
+									"\r",
+									"// Test 2\r",
+									"pm.test(\"Check that worker data is updated\", ()=> {\r",
+									"    const oldWorkerData = pm.collectionVariables.get(\"randomWorker\")\r",
+									"    const updatedWorkerData = pm.collectionVariables.get(\"updatedWorker\")\r",
+									"    pm.expect(pm.collectionVariables.get(\"randomWorker\")).to.not.eql(pm.collectionVariables.get(\"updatedWorker\"))\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\",\r\n    \"hourlyWage\":{{hourlyWage}},\r\n    \"chargePerHour\":{{hourlyCharge}}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/workers/{{randomWorkerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workers",
+								"{{randomWorkerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a worker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Delete a worker.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workers/{{randomWorkerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workers",
+								"{{randomWorkerId}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
@@ -1623,6 +1922,35 @@
 		{
 			"key": "updateCarLicensePlate",
 			"value": ""
+		},
+		{
+			"key": "hourlyWage",
+			"value": ""
+		},
+		{
+			"key": "hourlyCharge",
+			"value": ""
+		},
+		{
+			"key": "workerMaxId",
+			"value": ""
+		},
+		{
+			"key": "randomWorkerId",
+			"value": ""
+		},
+		{
+			"key": "randomWorker",
+			"value": ""
+		},
+		{
+			"key": "updatedWorker",
+			"value": ""
+		},
+		{
+			"key": "workerCount",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
