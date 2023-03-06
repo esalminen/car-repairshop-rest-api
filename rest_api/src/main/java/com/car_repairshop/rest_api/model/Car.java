@@ -70,14 +70,4 @@ public class Car {
 
   public Car() {
   }
-
-  public Car(String licensePlate, String brand, String model, String color, String year, int mileage) {
-    this.licensePlate = licensePlate;
-    this.brand = brand;
-    this.model = model;
-    this.color = color;
-    this.year = year;
-    this.mileage = mileage;
-  }
-
 }

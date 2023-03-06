@@ -14,7 +14,7 @@ import com.car_repairshop.rest_api.model.*;
  * @version 1.0
  * @since 23.2.2023
  * 
- *        Class handles all the logic of handling the customer classes.
+ *        Class holds all the logic of handling the customer classes.
  */
 
 @Service

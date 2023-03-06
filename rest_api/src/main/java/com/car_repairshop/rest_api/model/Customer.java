@@ -35,8 +35,4 @@ public class Customer extends Person {
 
   public Customer() {
   }
-
-  public Customer(String firstName, String lastName, String email, String phone, String address) {
-    super(firstName, lastName, email, phone, address);
-  }
 }

@@ -35,11 +35,4 @@ public class Worker extends Person {
 
   public Worker() {
   }
-
-  public Worker(String firstName, String lastName, String email, String phone, String address,
-      int hourlyWage, int chargePerHour) {
-    super(firstName, lastName, email, phone, address);
-    this.hourlyWage = hourlyWage;
-    this.chargePerHour = chargePerHour;
-  }
 }

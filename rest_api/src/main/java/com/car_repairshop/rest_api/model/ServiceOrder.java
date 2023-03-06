@@ -20,8 +20,63 @@ package com.car_repairshop.rest_api.model;
 public class ServiceOrder {
   private Long id;
   private Long customerId;
-  private Long carLisencePlate;
-  private ServiceEvent serviceEvent;
+  private String carLisencePlate;
+  private Long serviceEventId;
   private String serviceOrderDescription;
   private boolean serviceOrderPaid;
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Long getCustomerId() {
+    return this.customerId;
+  }
+
+  public void setCustomerId(Long id) {
+    this.id = customerId;
+  }
+
+  public String getCarLisencePlate() {
+    return this.carLisencePlate;
+  }
+
+  public void setCarLisencePlate(String carLisencePlate) {
+    this.carLisencePlate = carLisencePlate;
+  }
+
+  public Long getServiceEventId() {
+    return this.serviceEventId;
+  }
+
+  public void setServiceEventId(Long serviceEventId) {
+    this.serviceEventId = serviceEventId;
+  }
+
+  public String getServiceOrderDescription() {
+    return this.serviceOrderDescription;
+  }
+
+  public void setServiceOrderDescription(String serviceOrderDescription) {
+    this.serviceOrderDescription = serviceOrderDescription;
+  }
+
+  public boolean isServiceOrderPaid() {
+    return this.serviceOrderPaid;
+  }
+
+  public boolean getServiceOrderPaid() {
+    return this.serviceOrderPaid;
+  }
+
+  public void setServiceOrderPaid(boolean serviceOrderPaid) {
+    this.serviceOrderPaid = serviceOrderPaid;
+  }
+
+  public ServiceOrder() {
+  }
 }
