@@ -47,9 +47,9 @@ public class ServiceOrderController {
   public ResponseEntity<ServiceOrder> addServiceOrder(@RequestBody ServiceOrder serviceOrder) {
     ServiceOrder result = sos.addServiceOrder(serviceOrder);
     if (result != null) {
-      return new ResponseEntity<ServiceOrder>(result, HttpStatus.OK);
+      return new ResponseEntity<ServiceOrder>(result, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<ServiceOrder>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<ServiceOrder>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -144,7 +144,7 @@ public class ServiceOrderController {
     if (result != null) {
       return new ResponseEntity<ServiceOrder>(result, HttpStatus.OK);
     } else {
-      return new ResponseEntity<ServiceOrder>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<ServiceOrder>(result, HttpStatus.BAD_REQUEST);
     }
   }
 

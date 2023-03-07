@@ -47,9 +47,9 @@ public class CustomerController {
   public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
     Customer result = cs.addCustomer(customer);
     if (result != null) {
-      return new ResponseEntity<Customer>(result, HttpStatus.OK);
+      return new ResponseEntity<Customer>(result, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<Customer>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Customer>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -64,9 +64,9 @@ public class CustomerController {
   public ResponseEntity<Car> addCarToCustomer(@RequestBody Car car, @PathVariable Long customerId) {
     Car result = cs.addCarToCustomer(car, customerId);
     if (result != null) {
-      return new ResponseEntity<Car>(result, HttpStatus.OK);
+      return new ResponseEntity<Car>(result, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Car>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -145,7 +145,7 @@ public class CustomerController {
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
     } else {
-      return new ResponseEntity<Customer>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Customer>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -164,7 +164,7 @@ public class CustomerController {
     if (result != null) {
       return new ResponseEntity<Car>(result, HttpStatus.OK);
     } else {
-      return new ResponseEntity<Car>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Car>(result, HttpStatus.BAD_REQUEST);
     }
   }
 

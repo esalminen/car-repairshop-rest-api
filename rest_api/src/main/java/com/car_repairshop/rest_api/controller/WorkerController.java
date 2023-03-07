@@ -46,9 +46,9 @@ public class WorkerController {
   public ResponseEntity<Worker> addWorker(@RequestBody Worker worker) {
     Worker result = ws.addWorker(worker);
     if (result != null) {
-      return new ResponseEntity<Worker>(result, HttpStatus.OK);
+      return new ResponseEntity<Worker>(result, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<Worker>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Worker>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -94,7 +94,7 @@ public class WorkerController {
     if (result != null) {
       return new ResponseEntity<Worker>(result, HttpStatus.OK);
     } else {
-      return new ResponseEntity<Worker>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Worker>(result, HttpStatus.BAD_REQUEST);
     }
   }
 

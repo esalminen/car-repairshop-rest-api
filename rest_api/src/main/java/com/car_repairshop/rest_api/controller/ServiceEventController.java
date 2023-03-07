@@ -47,9 +47,9 @@ public class ServiceEventController {
   public ResponseEntity<ServiceEvent> addServiceEvent(@RequestBody ServiceEvent serviceEvent) {
     ServiceEvent result = ses.addServiceEvent(serviceEvent);
     if (result != null) {
-      return new ResponseEntity<ServiceEvent>(result, HttpStatus.OK);
+      return new ResponseEntity<ServiceEvent>(result, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<ServiceEvent>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<ServiceEvent>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -96,7 +96,7 @@ public class ServiceEventController {
     if (result != null) {
       return new ResponseEntity<ServiceEvent>(result, HttpStatus.OK);
     } else {
-      return new ResponseEntity<ServiceEvent>(result, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<ServiceEvent>(result, HttpStatus.BAD_REQUEST);
     }
   }
 
