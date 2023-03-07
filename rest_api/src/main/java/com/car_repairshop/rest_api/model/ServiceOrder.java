@@ -38,7 +38,7 @@ public class ServiceOrder {
   }
 
   public void setCustomerId(Long id) {
-    this.id = customerId;
+    this.customerId = id;
   }
 
   public String getCarLisencePlate() {
@@ -63,10 +63,6 @@ public class ServiceOrder {
 
   public void setServiceOrderDescription(String serviceOrderDescription) {
     this.serviceOrderDescription = serviceOrderDescription;
-  }
-
-  public boolean isServiceOrderPaid() {
-    return this.serviceOrderPaid;
   }
 
   public boolean getServiceOrderPaid() {

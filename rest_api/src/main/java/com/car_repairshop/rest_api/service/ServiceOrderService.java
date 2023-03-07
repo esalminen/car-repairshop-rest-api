@@ -83,6 +83,19 @@ public class ServiceOrderService {
   }
 
   /**
+   * Returns a list of serviceOrders by service paid status.
+   */
+  public List<ServiceOrder> getServiceOrderByServicePaidStatus(boolean servicePaidStatus) {
+    List<ServiceOrder> serviceOrdersByServicePaidStatus = new ArrayList<>();
+    for (ServiceOrder serviceOrder : serviceOrders) {
+      if (serviceOrder.getServiceOrderPaid() == servicePaidStatus) {
+        serviceOrdersByServicePaidStatus.add(serviceOrder);
+      }
+    }
+    return serviceOrdersByServicePaidStatus;
+  }
+
+  /**
    * Updates serviceOrder data. Returns the updated serviceOrder.
    */
   public ServiceOrder updateServiceOrder(Long serviceOrderId, ServiceOrder updatedServiceOrder) {

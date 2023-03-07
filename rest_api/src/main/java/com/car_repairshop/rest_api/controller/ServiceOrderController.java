@@ -115,6 +115,22 @@ public class ServiceOrderController {
   }
 
   /**
+   * Returns a list of serviceOrders by invoice paid status.
+   * 
+   * @param condition
+   * @return ResponseEntity<List<ServiceOrder>>
+   */
+  @GetMapping("/serviceorders/invoicepaid/{condition}")
+  public ResponseEntity<List<ServiceOrder>> getServiceOrdersByInvoicePaid(@PathVariable Boolean condition) {
+    List<ServiceOrder> result = sos.getServiceOrderByServicePaidStatus(condition);
+    if (!result.isEmpty()) {
+      return new ResponseEntity<List<ServiceOrder>>(result, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<List<ServiceOrder>>(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  /**
    * Updates a serviceOrder by id and returns the updated serviceOrder.
    * 
    * @param serviceOrderId
