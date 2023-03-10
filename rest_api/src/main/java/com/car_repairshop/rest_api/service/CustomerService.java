@@ -11,8 +11,8 @@ import com.car_repairshop.rest_api.model.*;
  * This class represents a serviceclass for all customers.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 23.2.2023
+ * @version 1.1
+ * @since 8.3.2023
  * 
  *        Class holds all the logic of handling the customer classes.
  */
@@ -121,8 +121,9 @@ public class CustomerService {
     if (customer != null) {
       for (Car c : customer.getCars()) {
         if (c.getLicensePlate().equals(updatedCar.getLicensePlate())) {
-          c = updatedCar;
-          car = c;
+          int carIndex = customer.getCars().indexOf(c);
+          customer.getCars().set(carIndex, updatedCar);
+          car = updatedCar;
         }
       }
       if (car != null) {

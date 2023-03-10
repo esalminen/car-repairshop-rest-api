@@ -12,7 +12,6 @@ package com.car_repairshop.rest_api.model;
  */
 
 public class Car {
-
   private String licensePlate;
   private String brand;
   private String model;

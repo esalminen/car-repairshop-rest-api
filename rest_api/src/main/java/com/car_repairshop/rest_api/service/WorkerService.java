@@ -62,8 +62,9 @@ public class WorkerService {
     Worker worker = getWorkerById(workerId);
     updatedWorker.setId(workerId);
     if (worker != null) {
-      worker = updatedWorker;
-      return worker;
+      int workerIndex = workers.indexOf(worker);
+      workers.set(workerIndex, updatedWorker);
+      return updatedWorker;
     } else {
       return null;
     }
