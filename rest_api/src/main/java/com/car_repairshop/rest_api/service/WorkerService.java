@@ -11,8 +11,8 @@ import com.car_repairshop.rest_api.model.*;
  * This class represents a serviceclass for all workers.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 23.2.2023
+ * @version 1.1
+ * @since 10.3.2023
  * 
  *        Class holds all the logic of handling the worker classes.
  */

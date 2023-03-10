@@ -19,9 +19,9 @@ package com.car_repairshop.rest_api.model;
 
 public class ServiceOrder {
   private Long id;
-  private Long customerId;
+  private Customer customer;
   private String carLisencePlate;
-  private Long serviceEventId;
+  private ServiceEvent serviceEvent;
   private String serviceOrderDescription;
   private boolean serviceOrderPaid;
 
@@ -33,12 +33,12 @@ public class ServiceOrder {
     this.id = id;
   }
 
-  public Long getCustomerId() {
-    return this.customerId;
+  public Customer getCustomer() {
+    return this.customer;
   }
 
-  public void setCustomerId(Long id) {
-    this.customerId = id;
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
   }
 
   public String getCarLisencePlate() {
@@ -49,12 +49,12 @@ public class ServiceOrder {
     this.carLisencePlate = carLisencePlate;
   }
 
-  public Long getServiceEventId() {
-    return this.serviceEventId;
+  public ServiceEvent getServiceEventId() {
+    return this.serviceEvent;
   }
 
-  public void setServiceEventId(Long serviceEventId) {
-    this.serviceEventId = serviceEventId;
+  public void setServiceEventId(ServiceEvent serviceEvent) {
+    this.serviceEvent = serviceEvent;
   }
 
   public String getServiceOrderDescription() {

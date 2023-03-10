@@ -16,7 +16,7 @@ package com.car_repairshop.rest_api.model;
 
 public class ServiceEvent {
   private Long id;
-  private Worker workerId;
+  private Worker worker;
   private String serviceDescription;
   private int workHours;
 
@@ -29,11 +29,11 @@ public class ServiceEvent {
   }
 
   public Worker getWorkerId() {
-    return this.workerId;
+    return this.worker;
   }
 
-  public void setWorkerId(Worker workerId) {
-    this.workerId = workerId;
+  public void setWorkerId(Worker worker) {
+    this.worker = worker;
   }
 
   public String getServiceDescription() {

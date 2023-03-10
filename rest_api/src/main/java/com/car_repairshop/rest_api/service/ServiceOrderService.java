@@ -62,7 +62,7 @@ public class ServiceOrderService {
   public List<ServiceOrder> getServiceOrderByCustomerId(Long customerId) {
     List<ServiceOrder> serviceOrdersByCustomerId = new ArrayList<>();
     for (ServiceOrder serviceOrder : serviceOrders) {
-      if (serviceOrder.getCustomerId() == customerId) {
+      if (serviceOrder.getCustomer().getId() == customerId) {
         serviceOrdersByCustomerId.add(serviceOrder);
       }
     }
