@@ -134,7 +134,7 @@ public class CustomerService {
   }
 
   /**
-   * Deletes a customer by id. Returns true if the customer was deleted.
+   * Deletes a customer by id. Returns the deleted customer.
    */
   public Customer deleteCustomer(Long customerId) {
     Customer customer = getCustomerById(customerId);
@@ -147,7 +147,7 @@ public class CustomerService {
   }
 
   /**
-   * Deletes a car by license plate. Returns deleted car.
+   * Deletes a car by license plate. Returns the deleted car.
    */
   public Car deleteCar(Long customerId, String licensePlate) {
     Customer customer = getCustomerById(customerId);

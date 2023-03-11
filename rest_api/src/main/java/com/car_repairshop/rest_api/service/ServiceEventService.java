@@ -63,8 +63,9 @@ public class ServiceEventService {
     ServiceEvent serviceEvent = getServiceEventById(serviceEventId);
     updatedServiceEvent.setId(serviceEventId);
     if (serviceEvent != null) {
-      serviceEvent = updatedServiceEvent;
-      return serviceEvent;
+      int serviceEventIndex = serviceEvents.indexOf(serviceEvent);
+      serviceEvents.set(serviceEventIndex, updatedServiceEvent);
+      return updatedServiceEvent;
     } else {
       return null;
     }

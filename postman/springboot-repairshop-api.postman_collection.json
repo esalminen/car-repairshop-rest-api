@@ -18,12 +18,12 @@
 								"exec": [
 									"/**\r",
 									" * Create customer.\r",
-									" * Test 1: Test that request returns status code 200.\r",
+									" * Test 1: Test that request returns status code 201.\r",
 									" */\r",
 									"\r",
 									"//Test 1\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
 									"});\r",
 									"\r",
 									"// Track customer id value for generating 1-3 cars\r",
@@ -98,7 +98,7 @@
 								"exec": [
 									"/**\r",
 									" * Create 1-2 cars to customer\r",
-									" * Test 1: Test that response status code is 200.\r",
+									" * Test 1: Test that response status code is 201.\r",
 									" */\r",
 									"\r",
 									"const currentCustomerId = parseInt(pm.collectionVariables.get('currentCustomerId'))\r",
@@ -107,8 +107,8 @@
 									"const customerCarAmount = parseInt(pm.collectionVariables.get(\"customerCarAmount\"))\r",
 									"\r",
 									"// Test 1\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
 									"});\r",
 									"\r",
 									"// If customer doesn't have enough cars, run this request again\r",
@@ -562,12 +562,12 @@
 								"exec": [
 									"/**\r",
 									" * Create a worker.\r",
-									" * Test 1: Test that request returns status code 200.\r",
+									" * Test 1: Test that request returns status code 201.\r",
 									" */\r",
 									"\r",
 									"//Test 1\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
 									"});\r",
 									"\r",
 									"// If more workers are needed post a new one\r",
@@ -822,6 +822,288 @@
 							"path": [
 								"workers",
 								"{{randomWorkerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Order",
+			"item": [
+				{
+					"name": "Post a service order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Test data for service order. Select a random description from list at each run.\r",
+									"const description = utils.getRandomServiceOrderDescription()\r",
+									"pm.variables.set('serviceOrderDescription', description)\r",
+									"\r",
+									"\r",
+									"// pm.variables.set('carBrand', car.brand);\r",
+									"// pm.variables.set('carModel', car.model);\r",
+									"// pm.variables.set('carYear', car.year);\r",
+									"// pm.variables.set('carMileage', car.mileage);\r",
+									"// pm.variables.set('carColor', car.color);\r",
+									"// pm.variables.set('carLicensePlate', car.licensePlate);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create a service order.\r",
+									" * Test 1: Test that request returns status code 201.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"customerId\": \"8\",\r\n    \"carLisencePlate\": \"QHH-738\",\r\n    \"serviceOrderDescription\":\"{{serviceOrderDescription}}\",\r\n    \"serviceOrderPaid\":\"False\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all service orders",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all service orders\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a service order with id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get service order with id\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a worker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Update a service order.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\",\r\n    \"hourlyWage\":{{hourlyWage}},\r\n    \"chargePerHour\":{{hourlyCharge}}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a worker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Delete a service order.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
 							]
 						}
 					},
@@ -1842,6 +2124,23 @@
 					"        const randomIndex = Math.floor( Math.random() * cars.length )",
 					"        const randomCar = cars[ randomIndex ]",
 					"        return randomCar",
+					"    },",
+					"",
+					"    getRandomServiceOrderDescription: () => {",
+					"        const descriptions = [",
+					"            \"Routine maintenance according to mileage.\",",
+					"            \"Clutch is making strange noise when using. Investigate and repair\",",
+					"            \"Oil, oil filter and spark plug change\",",
+					"            \"New tire installation. Customer has own tires with him\",",
+					"            \"Camshaft and timing belt renewal\",",
+					"            \"Headlight change and adjustemnt\",",
+					"            \"Rust removal from lower parts of the chassis\",",
+					"            \"Starter engine change\",",
+					"            \"Battery change\",",
+					"        ]",
+					"        const randomIndex = Math.floor( Math.random() * descriptions.length )",
+					"        const randomDescription = descriptions[randomIndex]",
+					"        return randomDescription",
 					"    }",
 					"}"
 				]

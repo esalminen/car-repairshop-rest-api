@@ -75,7 +75,7 @@ public class ServiceOrderService {
   public List<ServiceOrder> getServiceOrderByCarLicensePlate(String carLicensePlate) {
     List<ServiceOrder> serviceOrdersByCarLicensePlate = new ArrayList<>();
     for (ServiceOrder serviceOrder : serviceOrders) {
-      if (serviceOrder.getCarLisencePlate().equals(carLicensePlate)) {
+      if (serviceOrder.getCarLicensePlate().equals(carLicensePlate)) {
         serviceOrdersByCarLicensePlate.add(serviceOrder);
       }
     }
@@ -102,8 +102,9 @@ public class ServiceOrderService {
     ServiceOrder serviceOrder = getServiceOrderById(serviceOrderId);
     updatedServiceOrder.setId(serviceOrderId);
     if (serviceOrder != null) {
-      serviceOrder = updatedServiceOrder;
-      return serviceOrder;
+      int serviceOrderIndex = serviceOrders.indexOf(serviceOrder);
+      serviceOrders.set(serviceOrderIndex, updatedServiceOrder);
+      return updatedServiceOrder;
     } else {
       return null;
     }

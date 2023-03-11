@@ -20,7 +20,7 @@ package com.car_repairshop.rest_api.model;
 public class ServiceOrder {
   private Long id;
   private Customer customer;
-  private String carLisencePlate;
+  private String carLicensePlate;
   private ServiceEvent serviceEvent;
   private String serviceOrderDescription;
   private boolean serviceOrderPaid;
@@ -41,12 +41,12 @@ public class ServiceOrder {
     this.customer = customer;
   }
 
-  public String getCarLisencePlate() {
-    return this.carLisencePlate;
+  public String getCarLicensePlate() {
+    return this.carLicensePlate;
   }
 
-  public void setCarLisencePlate(String carLisencePlate) {
-    this.carLisencePlate = carLisencePlate;
+  public void setCarLicensePlate(String carLisencePlate) {
+    this.carLicensePlate = carLisencePlate;
   }
 
   public ServiceEvent getServiceEventId() {
