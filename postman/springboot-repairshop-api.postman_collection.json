@@ -532,6 +532,59 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get all customers to collection variable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all customers from REST API.\r",
+									" * Test 1: Test that response status code is 200.\r",
+									" * Test 2: Test that response gives right amount of customers.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Set customers to collection variable\r",
+									"pm.collectionVariables.set(\"customersCollection\", JSON.stringify(pm.response.json()))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -839,17 +892,20 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"// Pre-script for test\r",
+									"// 1. Set collection variable for random customer and customers random car\r",
+									"const customerCollection = JSON.parse(pm.collectionVariables.get(\"customersCollection\"))\r",
+									"const randomCustomerIndex = Math.floor(Math.random() * customerCollection.length)\r",
+									"const randomCustomer = customerCollection[randomCustomerIndex]\r",
+									"const randomCustomerCarIndex = Math.floor(Math.random() * randomCustomer.cars.length)\r",
+									"const randomCustomerCar = randomCustomer.cars[randomCustomerCarIndex]\r",
+									"pm.collectionVariables.set(\"randomCustomerId\", randomCustomer.id)\r",
+									"pm.collectionVariables.set(\"randomCustomer\", JSON.stringify(randomCustomer))\r",
+									"pm.collectionVariables.set(\"randomCustomerCarLicensePlate\", randomCustomerCar.licensePlate)\r",
+									"\r",
 									"// Test data for service order. Select a random description from list at each run.\r",
 									"const description = utils.getRandomServiceOrderDescription()\r",
-									"pm.variables.set('serviceOrderDescription', description)\r",
-									"\r",
-									"\r",
-									"// pm.variables.set('carBrand', car.brand);\r",
-									"// pm.variables.set('carModel', car.model);\r",
-									"// pm.variables.set('carYear', car.year);\r",
-									"// pm.variables.set('carMileage', car.mileage);\r",
-									"// pm.variables.set('carColor', car.color);\r",
-									"// pm.variables.set('carLicensePlate', car.licensePlate);"
+									"pm.variables.set('serviceOrderDescription', description)"
 								],
 								"type": "text/javascript"
 							}
@@ -878,7 +934,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"customerId\": \"8\",\r\n    \"carLisencePlate\": \"QHH-738\",\r\n    \"serviceOrderDescription\":\"{{serviceOrderDescription}}\",\r\n    \"serviceOrderPaid\":\"False\"\r\n}\r\n",
+							"raw": "{   \r\n    \"customer\":{{randomCustomer}},\r\n    \"carLicensePlate\":\"{{randomCustomerCarLicensePlate}}\",\r\n    \"serviceOrderDescription\":\"{{serviceOrderDescription}}\",\r\n    \"serviceOrderPaid\":\"False\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -892,6 +948,80 @@
 							],
 							"path": [
 								"serviceorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post a service event to service order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pre-script for test\r",
+									"// 1. Set collection variable for random customer and customers random car\r",
+									"const customerCollection = JSON.parse(pm.collectionVariables.get(\"customersCollection\"))\r",
+									"const randomCustomerIndex = Math.floor(Math.random() * customerCollection.length)\r",
+									"const randomCustomer = customerCollection[randomCustomerIndex]\r",
+									"const randomCustomerCarIndex = Math.floor(Math.random() * randomCustomer.cars.length)\r",
+									"const randomCustomerCar = randomCustomer.cars[randomCustomerCarIndex]\r",
+									"pm.collectionVariables.set(\"randomCustomerId\", randomCustomer.id)\r",
+									"pm.collectionVariables.set(\"randomCustomer\", JSON.stringify(randomCustomer))\r",
+									"pm.collectionVariables.set(\"randomCustomerCarLicensePlate\", randomCustomerCar.licensePlate)\r",
+									"\r",
+									"// Test data for service order. Select a random description from list at each run.\r",
+									"const description = utils.getRandomServiceDescription()\r",
+									"pm.collectionVariables.set(\"serviceEventDescription\", description)\r",
+									"\r",
+									"// Test data for service order. Select a random workhours from between two numbers at each run.\r",
+									"const workHours = utils.getRandomWorkHours(2, 10)\r",
+									"pm.collectionVariables.set(\"workHours\", workHours)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create a service order.\r",
+									" * Test 1: Test that request returns status code 201.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"worker\":{{randomWorker}},\r\n    \"serviceDescription\":\"{{serviceEventDescription}}\",\r\n    \"workHours\":\"{{workHours}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/{{currentServiceOrderId}}/serviceevent",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								"{{currentServiceOrderId}}",
+								"serviceevent"
 							]
 						}
 					},
@@ -977,26 +1107,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/:id",
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
+								"{{randomCustomerId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update a worker",
+					"name": "Update a service order",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1031,7 +1155,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\",\r\n    \"address\":\"{{$randomStreetAddress}}\",\r\n    \"hourlyWage\":{{hourlyWage}},\r\n    \"chargePerHour\":{{hourlyCharge}}\r\n}\r\n",
+							"raw": "{   \r\n    \"serviceOrderPaid\":\"True\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1039,26 +1163,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/:id",
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
+								"{{randomCustomerId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete a worker",
+					"name": "Delete a service order",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1091,19 +1209,212 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/:id",
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								":id"
+								"{{randomCustomerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Event",
+			"item": [
+				{
+					"name": "Get all service orders",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get all service orders\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders",
+							"host": [
+								"{{baseUrl}}"
 							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
+							"path": [
+								"serviceorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a service order with id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Get service order with id\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								"{{randomCustomerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a service order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Update a service order.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"// Test 1\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"serviceOrderPaid\":\"True\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								"{{randomCustomerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a service order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Delete a service order.\r",
+									" * Test 1: Test that request returns status code 200.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"serviceorders",
+								"{{randomCustomerId}}"
 							]
 						}
 					},
@@ -2141,6 +2452,20 @@
 					"        const randomIndex = Math.floor( Math.random() * descriptions.length )",
 					"        const randomDescription = descriptions[randomIndex]",
 					"        return randomDescription",
+					"    },",
+					"",
+					"    getRandomServiceDescription: () => {",
+					"        const descriptions = [",
+					"            \"Work done. Everything was OK\",",
+					"            \"Work done. Rear brakes are almost worn out. Recommended to change them ASAP\",",
+					"        ]",
+					"        const randomIndex = Math.floor( Math.random() * descriptions.length )",
+					"        const randomDescription = descriptions[randomIndex]",
+					"        return randomDescription",
+					"    },",
+					"",
+					"    getRandomWorkHours: (start, end) => {",
+					"        return Math.floor(Math.random() * (end - start)) + start",
 					"    }",
 					"}"
 				]
@@ -2250,6 +2575,38 @@
 			"key": "workerCount",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "customersCollection",
+			"value": ""
+		},
+		{
+			"key": "randomCustomerCar",
+			"value": ""
+		},
+		{
+			"key": "randomCustomerCarLicensePlate",
+			"value": ""
+		},
+		{
+			"key": "randomCustomerId",
+			"value": ""
+		},
+		{
+			"key": "updatedServiceOrder",
+			"value": ""
+		},
+		{
+			"key": "currentServiceOrderId",
+			"value": ""
+		},
+		{
+			"key": "serviceEventDescription",
+			"value": ""
+		},
+		{
+			"key": "workHours",
+			"value": ""
 		}
 	]
 }

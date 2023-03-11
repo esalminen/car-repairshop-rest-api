@@ -15,24 +15,15 @@ package com.car_repairshop.rest_api.model;
  */
 
 public class ServiceEvent {
-  private Long id;
   private Worker worker;
   private String serviceDescription;
   private int workHours;
 
-  public Long getId() {
-    return this.id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Worker getWorkerId() {
+  public Worker getWorker() {
     return this.worker;
   }
 
-  public void setWorkerId(Worker worker) {
+  public void setWorker(Worker worker) {
     this.worker = worker;
   }
 

@@ -49,11 +49,11 @@ public class ServiceOrder {
     this.carLicensePlate = carLisencePlate;
   }
 
-  public ServiceEvent getServiceEventId() {
+  public ServiceEvent getServiceEvent() {
     return this.serviceEvent;
   }
 
-  public void setServiceEventId(ServiceEvent serviceEvent) {
+  public void setServiceEvent(ServiceEvent serviceEvent) {
     this.serviceEvent = serviceEvent;
   }
 

@@ -11,8 +11,8 @@ import com.car_repairshop.rest_api.model.*;
  * This class represents a serviceclass for all service orders.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 6.3.2023
+ * @version 1.1
+ * @since 11.3.2023
  * 
  *        Class holds all the logic of handling the service order class.
  */
@@ -35,6 +35,20 @@ public class ServiceOrderService {
     serviceOrder.setId(highestId + 1);
     serviceOrders.add(serviceOrder);
     return serviceOrder;
+  }
+
+  /**
+   * Add a new serviceEvent to the serviceOrder. Returns the serviceOrder with the
+   * new serviceEvent.
+   */
+  public ServiceOrder addServiceEventToServiceOrder(Long serviceOrderId, ServiceEvent serviceEvent) {
+    ServiceOrder serviceOrder = getServiceOrderById(serviceOrderId);
+    if (serviceOrder != null && serviceOrder.getServiceEvent() == null) {
+      serviceOrder.setServiceEvent(serviceEvent);
+      return serviceOrder;
+    } else {
+      return null;
+    }
   }
 
   /**

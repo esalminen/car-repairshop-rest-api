@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.car_repairshop.rest_api.model.ServiceEvent;
 import com.car_repairshop.rest_api.model.ServiceOrder;
 import com.car_repairshop.rest_api.service.ServiceOrderService;
 
@@ -46,6 +47,24 @@ public class ServiceOrderController {
   @PostMapping("/serviceorders")
   public ResponseEntity<ServiceOrder> addServiceOrder(@RequestBody ServiceOrder serviceOrder) {
     ServiceOrder result = sos.addServiceOrder(serviceOrder);
+    if (result != null) {
+      return new ResponseEntity<ServiceOrder>(result, HttpStatus.CREATED);
+    } else {
+      return new ResponseEntity<ServiceOrder>(result, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Adds a new serviceEvent to the serviceOrder. Returns the service order.
+   * 
+   * @param serviceEvent
+   * @param serviceOrderId
+   * @return ResponseEntity<ServiceOrder>
+   */
+  @PostMapping("/serviceorders/{serviceOrderId}/serviceevent")
+  public ResponseEntity<ServiceOrder> addServiceEventToServiceOrder(@PathVariable Long serviceOrderId,
+      @RequestBody ServiceEvent serviceEvent) {
+    ServiceOrder result = sos.addServiceEventToServiceOrder(serviceOrderId, serviceEvent);
     if (result != null) {
       return new ResponseEntity<ServiceOrder>(result, HttpStatus.CREATED);
     } else {
