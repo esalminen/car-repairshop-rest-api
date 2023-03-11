@@ -2,7 +2,8 @@ package com.car_repairshop.rest_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,6 @@ public class ServiceOrderController {
    * 
    * @param serviceOrderService
    */
-  @Autowired
   public ServiceOrderController(ServiceOrderService serviceOrderService) {
     sos = serviceOrderService;
   }
@@ -45,7 +45,7 @@ public class ServiceOrderController {
    * @return ResponseEntity<ServiceOrder>
    */
   @PostMapping("/serviceorders")
-  public ResponseEntity<ServiceOrder> addServiceOrder(@RequestBody ServiceOrder serviceOrder) {
+  public ResponseEntity<ServiceOrder> addServiceOrder(@Valid @RequestBody ServiceOrder serviceOrder) {
     ServiceOrder result = sos.addServiceOrder(serviceOrder);
     if (result != null) {
       return new ResponseEntity<ServiceOrder>(result, HttpStatus.CREATED);
@@ -63,7 +63,7 @@ public class ServiceOrderController {
    */
   @PostMapping("/serviceorders/{serviceOrderId}/serviceevent")
   public ResponseEntity<ServiceOrder> addServiceEventToServiceOrder(@PathVariable Long serviceOrderId,
-      @RequestBody ServiceEvent serviceEvent) {
+      @Valid @RequestBody ServiceEvent serviceEvent) {
     ServiceOrder result = sos.addServiceEventToServiceOrder(serviceOrderId, serviceEvent);
     if (result != null) {
       return new ResponseEntity<ServiceOrder>(result, HttpStatus.CREATED);
@@ -158,7 +158,7 @@ public class ServiceOrderController {
    */
   @PutMapping("/serviceorders/{serviceOrderId}")
   public ResponseEntity<ServiceOrder> updateServiceOrder(@PathVariable Long serviceOrderId,
-      @RequestBody ServiceOrder serviceOrder) {
+      @Valid @RequestBody ServiceOrder serviceOrder) {
     ServiceOrder result = sos.updateServiceOrder(serviceOrderId, serviceOrder);
     if (result != null) {
       return new ResponseEntity<ServiceOrder>(result, HttpStatus.OK);

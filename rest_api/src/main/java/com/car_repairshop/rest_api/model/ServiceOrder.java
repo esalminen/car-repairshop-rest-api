@@ -1,5 +1,9 @@
 package com.car_repairshop.rest_api.model;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.validation.annotation.Validated;
+
 /**
  * This class represents a service order for car maintenance.
  * 
@@ -17,11 +21,15 @@ package com.car_repairshop.rest_api.model;
  *        the customer pays the bill.
  */
 
+@Validated
 public class ServiceOrder {
   private Long id;
+  @NotBlank(message = "Customer must not be empty")
   private Customer customer;
+  @NotBlank(message = "Car license plate must not be empty")
   private String carLicensePlate;
   private ServiceEvent serviceEvent;
+  @NotBlank(message = "Service order description must not be empty")
   private String serviceOrderDescription;
   private boolean serviceOrderPaid;
 

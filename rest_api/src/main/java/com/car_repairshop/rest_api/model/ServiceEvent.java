@@ -1,5 +1,11 @@
 package com.car_repairshop.rest_api.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
 /**
  * This class represents a service event for reserved car maintenance.
  * 
@@ -13,10 +19,13 @@ package com.car_repairshop.rest_api.model;
  *        event has a description of the work done and the time it took to
  *        complete ordered work.
  */
-
+@Validated
 public class ServiceEvent {
+  @NotNull(message = "Worker must not be empty")
   private Worker worker;
+  @NotBlank(message = "Service description must not be empty")
   private String serviceDescription;
+  @Min(value = 1, message = "Work hours must be at least 1")
   private int workHours;
 
   public Worker getWorker() {

@@ -2,7 +2,8 @@ package com.car_repairshop.rest_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,6 @@ public class WorkerController {
    * 
    * @param workerService
    */
-  @Autowired
   public WorkerController(WorkerService workerService) {
     ws = workerService;
   }
@@ -43,7 +43,7 @@ public class WorkerController {
    * @return ResponseEntity<Worker>
    */
   @PostMapping("/workers")
-  public ResponseEntity<Worker> addWorker(@RequestBody Worker worker) {
+  public ResponseEntity<Worker> addWorker(@Valid @RequestBody Worker worker) {
     Worker result = ws.addWorker(worker);
     if (result != null) {
       return new ResponseEntity<Worker>(result, HttpStatus.CREATED);
@@ -89,7 +89,7 @@ public class WorkerController {
    * @return ResponseEntity<Worker>
    */
   @PutMapping("/workers/{workerId}")
-  public ResponseEntity<Worker> updateWorker(@PathVariable Long workerId, @RequestBody Worker worker) {
+  public ResponseEntity<Worker> updateWorker(@PathVariable Long workerId, @Valid @RequestBody Worker worker) {
     Worker result = ws.updateWorker(workerId, worker);
     if (result != null) {
       return new ResponseEntity<Worker>(result, HttpStatus.OK);

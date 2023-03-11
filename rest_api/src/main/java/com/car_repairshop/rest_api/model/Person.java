@@ -1,5 +1,11 @@
 package com.car_repairshop.rest_api.model;
 
+import org.springframework.validation.annotation.Validated;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * This class represents a person. It is an abstract class and cannot be
  * instantiated.
@@ -13,12 +19,18 @@ package com.car_repairshop.rest_api.model;
  *        all the basic information of a person.
  */
 
+@Validated
 public abstract class Person {
+
   private Long id;
+  @NotEmpty(message = "Firstname cannot be empty")
   private String firstName;
+  @NotEmpty(message = "Lastname cannot be empty")
   private String lastName;
   private String email;
+  @NotEmpty(message = "Phonenumber cannot be empty")
   private String phone;
+  @NotEmpty(message = "Address cannot be empty")
   private String address;
 
   public Long getId() {

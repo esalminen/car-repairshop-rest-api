@@ -889,6 +889,28 @@
 					"name": "Post a service order",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**\r",
+									" * Create a service order.\r",
+									" * Test 1: Test that request returns status code 201.\r",
+									" */\r",
+									"\r",
+									"//Test 1\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"});\r",
+									"\r",
+									"// Track customer id value for generating 1-3 cars\r",
+									"const currentServiceOrderId = pm.response.json().id\r",
+									"pm.collectionVariables.set(\"currentServiceOrderId\", currentServiceOrderId)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
@@ -906,24 +928,6 @@
 									"// Test data for service order. Select a random description from list at each run.\r",
 									"const description = utils.getRandomServiceOrderDescription()\r",
 									"pm.variables.set('serviceOrderDescription', description)"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"/**\r",
-									" * Create a service order.\r",
-									" * Test 1: Test that request returns status code 201.\r",
-									" */\r",
-									"\r",
-									"//Test 1\r",
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201)\r",
-									"});\r",
-									""
 								],
 								"type": "text/javascript"
 							}
@@ -1076,15 +1080,6 @@
 					"name": "Get a service order with id",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
 								"exec": [
@@ -1097,6 +1092,18 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"});\r",
+									"\r",
+									"// Set the service order to collection variable\r",
+									"pm.collectionVariables.set(\"updatedServiceOrder\", JSON.stringify(pm.response.json()))\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript"
@@ -1107,13 +1114,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"raw": "{{baseUrl}}/serviceorders/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								"{{randomCustomerId}}"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -1126,6 +1139,9 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"const updatedServiceOrder = JSON.parse(pm.collectionVariables.get(\"updatedServiceOrder\"))\r",
+									"updatedServiceOrder.serviceOrderPaid = true\r",
+									"pm.collectionVariables.set(\"updatedServiceOrder\", JSON.stringify(updatedServiceOrder))\r",
 									""
 								],
 								"type": "text/javascript"
@@ -1155,7 +1171,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"serviceOrderPaid\":\"True\"\r\n}\r\n",
+							"raw": "{{updatedServiceOrder}}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1163,13 +1179,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"raw": "{{baseUrl}}/serviceorders/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								"{{randomCustomerId}}"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -1209,13 +1231,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/serviceorders/{{randomCustomerId}}",
+							"raw": "{{baseUrl}}/serviceorders/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"serviceorders",
-								"{{randomCustomerId}}"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						}
 					},

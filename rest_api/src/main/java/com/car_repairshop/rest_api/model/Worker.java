@@ -1,5 +1,9 @@
 package com.car_repairshop.rest_api.model;
 
+import javax.validation.constraints.Min;
+
+import org.springframework.validation.annotation.Validated;
+
 /**
  * This class represents a repairshop worker.
  * 
@@ -12,9 +16,12 @@ package com.car_repairshop.rest_api.model;
  *      hour which makes up the customer bill for repair (charge per hour * used
  *      work hours).
  */
-
+@Validated
 public class Worker extends Person {
+
+  @Min(value = 1, message = "Hourly wage must be at least 1")
   private int hourlyWage;
+  @Min(value = 1, message = "Hourly charge must be at least 1")
   private int chargePerHour;
 
   public int getHourlyWage() {

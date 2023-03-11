@@ -2,7 +2,8 @@ package com.car_repairshop.rest_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,6 @@ public class CustomerController {
    * 
    * @param customerService
    */
-  @Autowired
   public CustomerController(CustomerService customerService) {
     cs = customerService;
   }
@@ -44,7 +44,7 @@ public class CustomerController {
    * @return ResponseEntity<Customer>
    */
   @PostMapping("/customers")
-  public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+  public ResponseEntity<Customer> addCustomer(@Valid @RequestBody Customer customer) {
     Customer result = cs.addCustomer(customer);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.CREATED);
@@ -61,7 +61,7 @@ public class CustomerController {
    * @return ResponseEntity<Car>
    */
   @PostMapping("/customers/{customerId}/cars")
-  public ResponseEntity<Car> addCarToCustomer(@RequestBody Car car, @PathVariable Long customerId) {
+  public ResponseEntity<Car> addCarToCustomer(@Valid @RequestBody Car car, @PathVariable Long customerId) {
     Car result = cs.addCarToCustomer(car, customerId);
     if (result != null) {
       return new ResponseEntity<Car>(result, HttpStatus.CREATED);
@@ -140,7 +140,7 @@ public class CustomerController {
    * @return ResponseEntity<Customer>
    */
   @PutMapping("/customers/{customerId}")
-  public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @RequestBody Customer customer) {
+  public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @Valid @RequestBody Customer customer) {
     Customer result = cs.updateCustomer(customerId, customer);
     if (result != null) {
       return new ResponseEntity<Customer>(result, HttpStatus.OK);
@@ -159,7 +159,7 @@ public class CustomerController {
    */
   @PutMapping("/customers/{customerId}/cars/{licensePlate}")
   public ResponseEntity<Car> updateCar(@PathVariable Long customerId, @PathVariable String licensePlate,
-      @RequestBody Car car) {
+      @Valid @RequestBody Car car) {
     Car result = cs.updateCar(customerId, car);
     if (result != null) {
       return new ResponseEntity<Car>(result, HttpStatus.OK);

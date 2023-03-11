@@ -1,5 +1,10 @@
 package com.car_repairshop.rest_api.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
 /**
  * This class represents a customers car.
  * 
@@ -10,8 +15,9 @@ package com.car_repairshop.rest_api.model;
  *        Car class contains all the information of a car license
  *        plate, brand, model, color, year and mileage.
  */
-
+@Validated
 public class Car {
+  @NotEmpty(message = "License plate cannot be empty")
   private String licensePlate;
   private String brand;
   private String model;
