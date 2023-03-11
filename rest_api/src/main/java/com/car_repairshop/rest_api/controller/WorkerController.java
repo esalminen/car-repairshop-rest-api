@@ -59,7 +59,7 @@ public class WorkerController {
    */
   @GetMapping("/workers")
   public ResponseEntity<List<Worker>> getWorkers() {
-    if (!ws.getWorkers().isEmpty()) {
+    if (ws.getWorkers() != null) {
       return new ResponseEntity<List<Worker>>(ws.getWorkers(), HttpStatus.OK);
     }
     return new ResponseEntity<List<Worker>>(HttpStatus.NOT_FOUND);

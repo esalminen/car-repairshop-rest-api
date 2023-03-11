@@ -79,7 +79,7 @@ public class ServiceOrderController {
    */
   @GetMapping("/serviceorders")
   public ResponseEntity<List<ServiceOrder>> getServiceOrders() {
-    if (!sos.getServiceOrders().isEmpty()) {
+    if (sos.getServiceOrders() != null) {
       return new ResponseEntity<List<ServiceOrder>>(sos.getServiceOrders(), HttpStatus.OK);
     }
     return new ResponseEntity<List<ServiceOrder>>(HttpStatus.NOT_FOUND);

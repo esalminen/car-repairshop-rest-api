@@ -77,7 +77,7 @@ public class CustomerController {
    */
   @GetMapping("/customers")
   public ResponseEntity<List<Customer>> getCustomers() {
-    if (!cs.getCustomers().isEmpty()) {
+    if (cs.getCustomers() != null) {
       return new ResponseEntity<List<Customer>>(cs.getCustomers(), HttpStatus.OK);
     }
     return new ResponseEntity<List<Customer>>(HttpStatus.NOT_FOUND);
