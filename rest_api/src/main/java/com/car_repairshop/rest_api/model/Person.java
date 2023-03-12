@@ -1,18 +1,15 @@
 package com.car_repairshop.rest_api.model;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * This class represents a person. It is an abstract class and cannot be
  * instantiated.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 23.2.2023
+ * @version 1.1
+ * @since 11.3.2023
  * 
  * 
  *        Person class is a superclass for all people in the system. It contains

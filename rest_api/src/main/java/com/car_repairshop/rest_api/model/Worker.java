@@ -8,8 +8,8 @@ import org.springframework.validation.annotation.Validated;
  * This class represents a repairshop worker.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 23.2.2023
+ * @version 1.1
+ * @since 11.3.2023
  * 
  * @see Person
  *      Besides of Person properties, Worker has a hourly wage and charge per

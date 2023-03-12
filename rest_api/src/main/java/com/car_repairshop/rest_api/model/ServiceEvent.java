@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
  * This class represents a service event for reserved car maintenance.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 1.3.2023
+ * @version 1.1
+ * @since 11.3.2023
  * 
  * 
  *        Service event is a completed work of a car maintenance. It is created

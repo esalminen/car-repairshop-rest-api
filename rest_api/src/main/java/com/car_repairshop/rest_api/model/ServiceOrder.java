@@ -8,8 +8,8 @@ import org.springframework.validation.annotation.Validated;
  * This class represents a service order for car maintenance.
  * 
  * @author Esa Salminen
- * @version 1.0
- * @since 1.3.2023
+ * @version 1.1
+ * @since 11.3.2023
  * 
  * 
  *        Service order is a reservation for car maintenance in the repair shop.

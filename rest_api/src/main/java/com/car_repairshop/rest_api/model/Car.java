@@ -1,7 +1,6 @@
 package com.car_repairshop.rest_api.model;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -10,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
  * 
  * @author Esa Salminen
  * @version 1.0
- * @since 23.2.2023
+ * @since 11.3.2023
  * 
  *        Car class contains all the information of a car license
  *        plate, brand, model, color, year and mileage.
