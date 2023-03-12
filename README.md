@@ -1,5 +1,24 @@
-## car-repairshop-rest-api
+# car-repairshop-rest-api
 Spring Boot REST API for fictional repairshop for cars. Java programming course final project. 
+
+## Description
+Purpose of this REST-API is that fictional repairshop manager can keep customer, car, worker and service orders related data 
+in control.
+
+Example workflow with REST-API
+
+1. Manager enters all repairshop workers to the system
+2. Manager inserts a new customer and customers cars to the system.
+3. Manager inserts a new service order for a customers car to the system.
+4. Carshop worker goes to see from user interface if there is any work to be done
+5. Worker sees the created service order with detailed service description
+6. Worker marks the service order for himself and starts working.
+7. After work is completed, worker inserts used workhours and optional comment to the service order
+8. Manager gets notification that worker has completed the service order
+9. Manager notifies the customer, which comes to the repair shop to pick up the car
+10. If customer decides to pay the service while retaining the car, service order is marked accordinly
+11. If customer wants an invoice, service order is marked with information that customer has not yet paid it
+12. When customer pays the invoice, manager marks the service order to paid - status
 
 ### Customer
 
