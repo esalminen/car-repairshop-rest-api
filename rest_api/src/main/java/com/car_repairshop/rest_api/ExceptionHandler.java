@@ -20,6 +20,8 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
       HttpHeaders httpHeaders, HttpStatus httpStatus, WebRequest webRequest) {
+
+    // Creating a LinkedHashMap to store the timestamp, status and errors
     Map<String, Object> objectBody = new LinkedHashMap<>();
     objectBody.put("Current Timestamp", new Date());
     objectBody.put("Status", httpStatus.value());
@@ -33,6 +35,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
     objectBody.put("Errors", exceptionalErrors);
 
+    // Return the response entity with the body and status
     return new ResponseEntity<>(objectBody, httpStatus);
   }
 }
